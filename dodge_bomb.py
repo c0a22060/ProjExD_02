@@ -88,8 +88,7 @@ def main():
         """
         ぶつかったら数値を1にして泣き始める準備をする
         """
-            
-            
+
         key_1st = pg.key.get_pressed()
         sum_mv = [0, 0]
         for k, mv in vector.items():
@@ -107,14 +106,15 @@ def main():
         向きを残るようにしたいので0, 0を入れても更新されない
         最初だけ画像を代入する
         """
-        ac = accs[min(tmr//500,9)]  #独自機能
+        ac = accs[min(tmr//500,9)]  #独自機能 時間経過でこうかとんも加速する
         sum_mv[0] *= ac
         sum_mv[1] *= ac
 
         kk_rct.move_ip(sum_mv)  #練習3
         if inout(kk_rct) != (True, True):
             kk_rct.move_ip(-sum_mv[0], -sum_mv[1])
-        if acshon > 0:
+            
+        if acshon > 0:  #追加機能3
             acshon += 1
             kk_img_new = kk_img_cry
         if acshon > 100:
@@ -123,7 +123,7 @@ def main():
         screen.blit(kk_img_new, kk_rct)
 
         avx, avy = vx*accs[min(tmr//500,9)], vy*accs[min(tmr//500,9)]  #追加機能2
-        #時間によって爆弾のそくどがあがる
+        #時間によって爆弾の速度があがる
         bd_rct.move_ip(avx, avy)  #練習3
         yoko, tate = inout(bd_rct)
         if not yoko:
