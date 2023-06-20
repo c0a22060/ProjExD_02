@@ -72,6 +72,8 @@ def main():
     vx, vy = +5, +5  #練習2
     clock = pg.time.Clock()
     tmr = 0
+    accs = [a for a in range(1, 11)]  #追加機能2
+    
     
     while True:
         for event in pg.event.get():
@@ -80,6 +82,7 @@ def main():
             
         if kk_rct.colliderect(bd_rct):
             print("ゲームオーバー")
+            kk_img_new = kk_img
             return  #ゲームオーバー処理
             
         key_1st = pg.key.get_pressed()
@@ -99,7 +102,7 @@ def main():
         向きを残るようにしたいので0, 0を入れても更新されない
         最初だけ画像を代入する
         """
-        
+        avx, avy = vx*accs[min(tmr//500,9)], vy*accs[min(tmr//500,9)]  #独自の機能
         kk_rct.move_ip(sum_mv)  #練習3
         if inout(kk_rct) != (True, True):
             kk_rct.move_ip(-sum_mv[0], -sum_mv[1])
@@ -107,7 +110,9 @@ def main():
         screen.blit(bg_img, [0, 0])
         screen.blit(kk_img_new, kk_rct)
 
-        bd_rct.move_ip(vx, vy)  #練習3
+        avx, avy = vx*accs[min(tmr//500,9)], vy*accs[min(tmr//500,9)]  #追加機能2
+        #時間によって爆弾のそくどがあがる
+        bd_rct.move_ip(avx, avy)  #練習3
         yoko, tate = inout(bd_rct)
         if not yoko:
             vx *= -1
