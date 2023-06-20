@@ -58,6 +58,8 @@ def main():
     screen = pg.display.set_mode((WIDTH, HEIGHT))
     bg_img = pg.image.load("ex02/fig/pg_bg.jpg")
     kk_img = pg.image.load("ex02/fig/3.png")
+    kk_img_cry = pg.image.load("ex02/fig/8.png")
+    kk_img_cry = pg.transform.rotozoom(kk_img_cry, 0, 2.0)  #追加機能3
     kk_img = pg.transform.rotozoom(kk_img, 0, 2.0)
     kk_rct = kk_img.get_rect()
     kk_rct.center = 900, 400
@@ -73,7 +75,7 @@ def main():
     clock = pg.time.Clock()
     tmr = 0
     accs = [a for a in range(1, 11)]  #追加機能2
-    
+    acshon = 0
     
     while True:
         for event in pg.event.get():
@@ -81,9 +83,12 @@ def main():
                 return
             
         if kk_rct.colliderect(bd_rct):
-            print("ゲームオーバー")
-            kk_img_new = kk_img
-            return  #ゲームオーバー処理
+            if acshon == 0:
+                acshon = 1
+        """
+        ぶつかったら数値を1にして泣き始める準備をする
+        """
+            
             
         key_1st = pg.key.get_pressed()
         sum_mv = [0, 0]
@@ -102,16 +107,21 @@ def main():
         向きを残るようにしたいので0, 0を入れても更新されない
         最初だけ画像を代入する
         """
-        avx, avy = vx*accs[min(tmr//500,9)], vy*accs[min(tmr//500,9)]  #独自の機能
+        avx, avy = vx*accs[min(tmr//500,9)], vy*accs[min(tmr//500,9)]  #追加機能2
+        #時間によって爆弾のそくどがあがる
+        
         kk_rct.move_ip(sum_mv)  #練習3
         if inout(kk_rct) != (True, True):
             kk_rct.move_ip(-sum_mv[0], -sum_mv[1])
-
+        if acshon > 0:
+            acshon += 1
+            kk_img_new = kk_img_cry
+        if acshon > 100:
+            return  #ゲームオーバー処理
+        
         screen.blit(bg_img, [0, 0])
         screen.blit(kk_img_new, kk_rct)
 
-        avx, avy = vx*accs[min(tmr//500,9)], vy*accs[min(tmr//500,9)]  #追加機能2
-        #時間によって爆弾のそくどがあがる
         bd_rct.move_ip(avx, avy)  #練習3
         yoko, tate = inout(bd_rct)
         if not yoko:
@@ -120,6 +130,7 @@ def main():
             vy *= -1
         screen.blit(bd_img, bd_rct)  
         pg.display.update()
+        
         tmr += 1
         clock.tick(50)
 
