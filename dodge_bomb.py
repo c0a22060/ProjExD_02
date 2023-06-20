@@ -10,7 +10,17 @@ vector = {
     pg.K_LEFT: (-5, 0),
     pg.K_RIGHT: (+5, 0),
 }
-
+def inout(Rect:pg.Rect) -> tuple[bool, bool]:
+    """
+    こうかとんが画面の中か外かを判定する関数
+    引数:爆弾orこうかとんrect
+    """
+    yoko, tate = True, True
+    if Rect.left < 0 or WIDTH < Rect.right: 
+        yoko = False
+    if Rect.top < 0 or HEIGHT < Rect.bottom:
+        tate = False
+    return yoko, tate
 
 def main():
     pg.display.set_caption("逃げろ！こうかとん")
@@ -43,14 +53,21 @@ def main():
                 sum_mv[0] += mv[0]
                 sum_mv[1] += mv[1]
         kk_rct.move_ip(sum_mv)  #練習3
+        if inout(kk_rct) != (True, True):
+            kk_rct.move_ip(-sum_mv[0], -sum_mv[1])
 
         screen.blit(bg_img, [0, 0])
         screen.blit(kk_img, kk_rct)
         bd_rct.move_ip(vx, vy)  #練習3
+        yoko, tate = inout(bd_rct)
+        if not yoko:
+            vx *= -1
+        if not tate:
+            vy *= -1
         screen.blit(bd_img, bd_rct)  
         pg.display.update()
         tmr += 1
-        clock.tick(100)
+        clock.tick(50)
 
 
 if __name__ == "__main__":
