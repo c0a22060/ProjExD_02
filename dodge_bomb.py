@@ -16,6 +16,8 @@ def direction_kk(mv, img):  #追加機能1
     それぞれの回転反転した画像を代入
     方向に合わせて辞書化する
     0.0の時は何も代入しないのでFalse
+    これによりキーを押していないとき
+    画像を最後に入力していた方向とおなじ物にする
     """
     kk_img_ogin = pg.image.load("ex02/fig/3.png")
     kk_img = pg.transform.flip(kk_img_ogin, True, False)
@@ -113,7 +115,6 @@ def main():
         kk_rct.move_ip(sum_mv)  #練習3
         if inout(kk_rct) != (True, True):
             kk_rct.move_ip(-sum_mv[0], -sum_mv[1])
-            
         if acshon > 0:  #追加機能3
             acshon += 1
             kk_img_new = kk_img_cry
