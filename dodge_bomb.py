@@ -46,6 +46,11 @@ def main():
         for event in pg.event.get():
             if event.type == pg.QUIT: 
                 return
+            
+        if kk_rct.colliderect(bd_rct):
+            print("ゲームオーバー")
+            return 
+        
         key_1st = pg.key.get_pressed()
         sum_mv = [0, 0]
         for k, mv in vector.items():
