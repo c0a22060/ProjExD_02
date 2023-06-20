@@ -19,8 +19,10 @@ def main():
     y = random.randint(0, HEIGHT)
     bd_rct = bd_img.get_rect()
     bd_rct.center = x, y
+    #爆弾の座標を決める
     clock = pg.time.Clock()
     tmr = 0
+    vx, vy = +5, +5  #練習2
     while True:
         for event in pg.event.get():
             if event.type == pg.QUIT: 
@@ -28,10 +30,11 @@ def main():
         
         screen.blit(bg_img, [0, 0])
         screen.blit(kk_img, [900, 400])
-        screen.blit(bd_img, bd_rct)
+        bd_rct.move_ip(vx, vy)
+        screen.blit(bd_img, bd_rct)  #練習3
         pg.display.update()
         tmr += 1
-        clock.tick(10)
+        clock.tick(100)
 
 
 if __name__ == "__main__":
